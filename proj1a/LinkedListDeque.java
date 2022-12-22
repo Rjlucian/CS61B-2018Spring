@@ -107,11 +107,4 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public static void main(String[] args) {
-        LinkedListDeque<Integer> deque = new LinkedListDeque<>();
-        deque.addLast(1);
-        deque.addFirst(0);
-        System.out.println(deque.getRecursive(1));
-        deque.printDeque();
-    }
 }
