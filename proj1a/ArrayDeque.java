@@ -35,12 +35,22 @@ public class ArrayDeque<T> {
         newFirst = capacity - 1;
         newLast = size;
     }
+
     public ArrayDeque() {
         size = 0;
         capacity = 8;
         items = (T[]) new Object[capacity];
         newFirst = 4;
         newLast = 5;
+    }
+
+    public T get(int i) {
+        if (i < 0 || i >= size) {
+            return null;
+        }
+        int startIndex = newFirst == capacity - 1 ? 0 : newFirst + 1;
+        int index = (startIndex + i) % capacity;
+        return items[index];
     }
 
     public void addFirst(T item) {
@@ -115,8 +125,8 @@ public class ArrayDeque<T> {
         }
         return item;
     }
-
 }
+
 
 
 
