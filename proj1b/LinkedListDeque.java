@@ -1,4 +1,4 @@
-public class LinkedListDeque<Item> implements Deque<Item>{
+public class LinkedListDeque<Item> implements Deque<Item> {
     private Node sentinel;
     private int size;
 
