@@ -9,7 +9,7 @@ public class TestArrayDequeGold {
         ArrayDequeSolution<Integer> ad = new ArrayDequeSolution<>();
         Integer numSad;
         Integer numAd;
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 10; i++) {
             double rm = StdRandom.uniform();
             if (rm < 0.5) {
                 sad.addFirst(i);
@@ -21,7 +21,7 @@ public class TestArrayDequeGold {
                 str = str + "addLast(" + i + ")\n";
             }
         }
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 10; i++) {
             double rm = StdRandom.uniform();
             if (rm < 0.5) {
                 numSad = sad.removeFirst();
