@@ -31,10 +31,9 @@ public class TestArrayDequeGold {
             } else {
                 numSad = sad.removeLast();
                 numAd = ad.removeLast();
-                str = str + "removerLast()\n";
+                str = str + "removeLast()\n";
                 assertEquals(str, numSad, numAd);
             }
         }
     }
-
 }
