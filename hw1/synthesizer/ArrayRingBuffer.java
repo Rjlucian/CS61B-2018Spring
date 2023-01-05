@@ -62,9 +62,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     }
 
     private class BufferIterator implements Iterator<T> {
-        public int offset;
+        private int offset;
 
-        public BufferIterator() {
+        BufferIterator() {
             this.offset = 0;
         }
 
