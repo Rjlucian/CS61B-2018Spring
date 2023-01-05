@@ -12,11 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * Plays guitar from MIDI files.
- *
- * @author Eli Lipsitz
- */
 public class GuitarPlayer {
     private Sequence sequence = null;
     private GuitarString[] strings;
