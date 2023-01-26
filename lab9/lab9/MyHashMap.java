@@ -1,5 +1,6 @@
 package lab9;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -82,18 +83,36 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
 
-    /* Returns a Set view of the keys contained in this map. */
+    /**
+     * Returns a Set view of the keys contained in this map.
+     */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        HashSet<K> set = new HashSet<>();
+        for (ArrayMap<K, V> bucket : buckets) {
+            for (int j = 0; j < bucket.size; j++) {
+                set.addAll(bucket.keySet());
+            }
+        }
+        return set;
     }
 
-    /* Removes the mapping for the specified key from this map if exists.
+    /**
+     * Removes the mapping for the specified key from this map if exists.
      * Not required for this lab. If you don't implement this, throw an
-     * UnsupportedOperationException. */
+     * UnsupportedOperationException.
+     */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        for (int i = 0; i < buckets.length; i++) {
+            for (int j = 0; j < buckets[i].size; j++) {
+                V value = buckets[i].remove(key);
+                if (value != null) {
+                    return value;
+                }
+            }
+        }
+        return null;
     }
 
     /* Removes the entry for the specified key only if it is currently mapped to
@@ -101,11 +120,19 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      * throw an UnsupportedOperationException.*/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        for (int i = 0; i < buckets.length; i++) {
+            for (int j = 0; j < buckets[i].size; j++) {
+                V v = buckets[i].remove(key, value);
+                if (v != null) {
+                    return value;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return keySet().iterator();
     }
 }
