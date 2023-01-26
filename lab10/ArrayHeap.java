@@ -167,7 +167,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
         T minItem = contents[1].myItem;
         contents[1] = contents[size--];
-        sink(1);
+        if (size > 0) {
+            sink(1);
+        }
         return minItem;
     }
 
@@ -439,4 +441,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
     }
 
+    public static void main(String[] args) {
+        ArrayHeap<Integer> heap = new ArrayHeap<>();
+        heap.insert(1, 1);
+        heap.removeMin();
+    }
 }
