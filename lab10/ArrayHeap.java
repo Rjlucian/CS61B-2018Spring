@@ -193,7 +193,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public void changePriority(T item, double priority) {
         int index = 0;
-        for (int i = 1; i < size; i++) {
+        for (int i = 1; i <= size; i++) {
             if (contents[i].myItem.equals(item)) {
                 index = i;
                 break;
@@ -202,6 +202,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (index == 0) {
             return;
         }
+        contents[index].myPriority = priority;
         if (index != 1 && contents[parentIndex(index)].myPriority > contents[index].myPriority) {
             swim(index);
         } else if (inBounds(leftIndex(index))) { // this node has one child at least
@@ -444,6 +445,12 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     public static void main(String[] args) {
         ArrayHeap<Integer> heap = new ArrayHeap<>();
         heap.insert(1, 1);
-        heap.removeMin();
+        heap.insert(2, 2);
+        heap.insert(3, 3);
+        heap.insert(4, 4);
+        heap.insert(5, 5);
+        heap.changePriority(5, -1);
+        heap.changePriority(4, -2.1);
+        System.out.print(heap);
     }
 }
