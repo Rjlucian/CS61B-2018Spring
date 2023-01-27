@@ -442,15 +442,4 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
     }
 
-    public static void main(String[] args) {
-        ArrayHeap<Integer> heap = new ArrayHeap<>();
-        heap.insert(1, 1);
-        heap.insert(2, 2);
-        heap.insert(3, 3);
-        heap.insert(4, 4);
-        heap.insert(5, 5);
-        heap.changePriority(5, -1);
-        heap.changePriority(4, -2.1);
-        System.out.print(heap);
-    }
 }
