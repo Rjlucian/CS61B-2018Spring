@@ -4,8 +4,12 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
+    private int num;
     private final boolean[][] grid;
-    private final WeightedQuickUnionUF uf;
+    // used for check percolated or not
+    private final WeightedQuickUnionUF ufForPercolated;
+    // used for prevent "backwash"
+    private final WeightedQuickUnionUF ufForConnected;
 
     /**
      * @param N size of the grid is N * N
@@ -16,13 +20,15 @@ public class Percolation {
         if (N <= 0) {
             throw new IllegalArgumentException(" N must larger than 0");
         }
+        num = 0;
         grid = new boolean[N][N];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
                 grid[i][j] = false;
             }
         }
-        uf = new WeightedQuickUnionUF(N * N + 2);
+        ufForPercolated = new WeightedQuickUnionUF(N * N + 2);
+        ufForConnected = new WeightedQuickUnionUF(N * N + 1);
     }
 
     /**
@@ -35,6 +41,7 @@ public class Percolation {
     public void open(int row, int col) {
         validate(row);
         validate(col);
+        num++;
         grid[row][col] = true;
         updateSelf(row, col);
         updateSurrounding(row, col);
@@ -60,7 +67,8 @@ public class Percolation {
         if (!isOpen(row, col)) {
             return false;
         } else {
-            return uf.connected(0, xyTo1D(row, col));
+            return ufForPercolated.connected(0, xyTo1D(row, col))
+                    && ufForConnected.connected(0, xyTo1D(row, col));
         }
     }
 
@@ -68,20 +76,13 @@ public class Percolation {
      * @return the number of open sites in grid
      */
     public int numberOfOpenSites() {
-        int ret = 0;
-        for (boolean[] es : grid) {
-            for (boolean e : es) {
-                if (e) {
-                    ret++;
-                }
-            }
-        }
-        return ret;
+        return num;
     }
 
     public boolean percolates() {
-        return uf.connected(0, grid.length * grid.length + 1);
+        return ufForPercolated.connected(0, grid.length * grid.length + 1);
     }
+
     /**
      * @param row index of site's row
      * @param column index of site's column
@@ -119,24 +120,29 @@ public class Percolation {
      */
     private void updateSelf(int row, int col) {
         if (row == 0) {
-            //  if row equals to 0, connect it with 0th element immediately
-            uf.union(0, xyTo1D(row, col));
+            // if row equals to 0, connect it with 0th element immediately
+            ufForPercolated.union(0, xyTo1D(row, col));
+            ufForConnected.union(0, xyTo1D(row, col));
             return;
         }
         if (inBound(row, col - 1) && isFull(row, col - 1)) { //left
-            uf.union(0, xyTo1D(row, col));
+            ufForPercolated.union(0, xyTo1D(row, col));
+            ufForConnected.union(0, xyTo1D(row, col));
             return;
         }
         if (inBound(row - 1, col) && isFull(row - 1, col)) { //up
-            uf.union(0, xyTo1D(row, col));
+            ufForPercolated.union(0, xyTo1D(row, col));
+            ufForConnected.union(0, xyTo1D(row, col));
             return;
         }
         if (inBound(row, col + 1) && isFull(row, col + 1)) { //right
-            uf.union(0, xyTo1D(row, col));
+            ufForPercolated.union(0, xyTo1D(row, col));
+            ufForConnected.union(0, xyTo1D(row, col));
             return;
         }
         if (inBound(row + 1, col) && isFull(row + 1, col)) { //down
-            uf.union(0, xyTo1D(row, col));
+            ufForPercolated.union(0, xyTo1D(row, col));
+            ufForConnected.union(0, xyTo1D(row, col));
         }
     }
 
@@ -149,22 +155,26 @@ public class Percolation {
     private void updateSurrounding(int row, int col) {
         if (inBound(row, col - 1) && isOpen(row, col - 1)) {
             // left
-            uf.union(xyTo1D(row, col), xyTo1D(row, col - 1));
+            ufForPercolated.union(xyTo1D(row, col), xyTo1D(row, col - 1));
+            ufForConnected.union(xyTo1D(row, col), xyTo1D(row, col - 1));
         }
         if (inBound(row - 1, col) && isOpen(row - 1, col)) {
             // up
-            uf.union(xyTo1D(row, col), xyTo1D(row - 1, col));
+            ufForPercolated.union(xyTo1D(row, col), xyTo1D(row - 1, col));
+            ufForConnected.union(xyTo1D(row, col), xyTo1D(row - 1, col));
         }
         if (inBound(row, col + 1) && isOpen(row, col + 1)) {
             // right
-            uf.union(xyTo1D(row, col), xyTo1D(row, col + 1));
+            ufForPercolated.union(xyTo1D(row, col), xyTo1D(row, col + 1));
+            ufForConnected.union(xyTo1D(row, col), xyTo1D(row, col + 1));
         }
         if (inBound(row + 1, col) && isOpen(row + 1, col)) {
             // down
-            uf.union(xyTo1D(row, col), xyTo1D(row + 1, col));
+            ufForPercolated.union(xyTo1D(row, col), xyTo1D(row + 1, col));
+            ufForConnected.union(xyTo1D(row, col), xyTo1D(row + 1, col));
         }
         if (row == grid.length - 1) {
-            uf.union(grid.length * grid.length + 1, xyTo1D(row, col));
+            ufForPercolated.union(grid.length * grid.length + 1, xyTo1D(row, col));
         }
     }
 
@@ -173,6 +183,7 @@ public class Percolation {
         percolation.open(0, 0);
         percolation.open(1, 0);
         percolation.open(2, 0);
+        percolation.open(2, 1);
         System.out.print(percolation.percolates());
     }
 }
