@@ -41,7 +41,10 @@ public class Percolation {
     public void open(int row, int col) {
         validate(row);
         validate(col);
-        num++;
+        if (!grid[row][col]) {
+            // add num only one time for every site
+            num++;
+        }
         grid[row][col] = true;
         updateSelf(row, col);
         updateSurrounding(row, col);
