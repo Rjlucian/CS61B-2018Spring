@@ -35,7 +35,7 @@ public class SimpleOomage implements Oomage {
             int a = red / 5;
             int b = green / 5;
             int c = blue / 5;
-            return (int) (Math.pow(51, 0) * a + Math.pow(51, 1) * b + Math.pow(51, 2) * c);
+            return (int) (Math.pow(52, 0) * a + Math.pow(52, 1) * b + Math.pow(52, 2) * c);
         }
     }
 
@@ -65,7 +65,8 @@ public class SimpleOomage implements Oomage {
     }
 
     public static void main(String[] args) {
-        System.out.println(Math.pow(2, 4));
+        System.out.println(new SimpleOomage(0, 255, 0).hashCode());
+        System.out.println(new SimpleOomage(0, 0, 5).hashCode());
     }
 
     public String toString() {

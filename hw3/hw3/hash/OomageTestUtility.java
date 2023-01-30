@@ -1,6 +1,5 @@
 package hw3.hash;
 
-import edu.princeton.cs.algs4.In;
 
 import java.util.HashMap;
 import java.util.List;
