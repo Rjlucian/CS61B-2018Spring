@@ -54,19 +54,6 @@ public class RadixSort {
     }
 
     private static void
-        updateCountsAndBuckets(String[] arr, int[] counts, Queue<String>[] buckets, int index) {
-        Arrays.fill(counts, 0);
-        for (String str : arr) {
-            int i = index >= str.length() ? 0 : (int) str.charAt(index);
-            counts[i]++;
-            if (buckets[i] == null) {
-                buckets[i] = new Queue<>();
-            }
-            buckets[i].enqueue(str);
-        }
-    }
-
-    private static void
         updateCountsAndBuckets(String[] arr, int[] counts, Map<Integer, Queue<String>> buckets, int index) {
         Arrays.fill(counts, 0);
         for (String str : arr) {
@@ -88,15 +75,6 @@ public class RadixSort {
         }
     }
 
-    private static void
-        copyToSortedArr(String[] arr, int[] counts, int[] starts, Queue<String>[] buckets) {
-        for (int i = 0; i < counts.length; i++) {
-            for (int j = 1; buckets[i] != null && j <= counts[i]; j++) {
-                arr[starts[i]] = buckets[i].dequeue();
-                starts[i]++;
-            }
-        }
-    }
 
     private static void
         copyToSortedArr(String[] arr, int[] counts, int[] starts, Map<Integer, Queue<String>> buckets) {
