@@ -1,7 +1,8 @@
 import edu.princeton.cs.algs4.Queue;
 
 import java.util.Arrays;
-
+import java.util.HashMap;
+import java.util.Map;
 /**
  * Class for doing Radix sort
  *
@@ -38,10 +39,10 @@ public class RadixSort {
     private static void sortHelperLSD(String[] asciis, int index) {
         int[] counts = new int[256];
         int[] starts = new int[256];
-        Queue<String>[] buckets = new Queue[256];
-        updateCountsAndBuckets(asciis, counts, buckets, index);
+        Map<Integer, Queue<String>> map = new HashMap<>();
+        updateCountsAndBuckets(asciis, counts, map, index);
         updateStarts(counts, starts);
-        copyToSortedArr(asciis, counts, starts, buckets);
+        copyToSortedArr(asciis, counts, starts, map);
     }
 
     private static int findLongest(String[] arr) {
@@ -66,6 +67,20 @@ public class RadixSort {
     }
 
     private static void
+        updateCountsAndBuckets(String[] arr, int[] counts, Map<Integer, Queue<String>> buckets, int index) {
+        Arrays.fill(counts, 0);
+        for (String str : arr) {
+            int i = index >= str.length() ? 0 : (int) str.charAt(index);
+            counts[i]++;
+            if (buckets.get(i) == null) {
+                buckets.put(i, new Queue<>());
+            }
+            buckets.get(i).enqueue(str);
+        }
+
+    }
+
+    private static void
         updateStarts(int[] counts, int[] starts) {
         Arrays.fill(starts, 0);
         for (int i = 1; i < counts.length; i++) {
@@ -83,6 +98,16 @@ public class RadixSort {
         }
     }
 
+    private static void
+        copyToSortedArr(String[] arr, int[] counts, int[] starts, Map<Integer, Queue<String>> buckets) {
+        for (int i : buckets.keySet()) {
+            for (int j = 1; j <= counts[i]; j++) {
+                arr[starts[i]] = buckets.get(i).dequeue();
+                starts[i]++;
+            }
+        }
+    }
+
     private static void printArr(String[] arr) {
         for (String str : arr) {
             System.out.print(str + " ");
@@ -91,7 +116,7 @@ public class RadixSort {
     }
 
     public static void main(String[] args) {
-        String[] arr = {"caaasdadq", "fgdvq1konf"};
+        String[] arr = {"a231", "32134b", "w3213d"};
         System.out.print("Origin: ");
         printArr(arr);
         String[] sortedArr = sort(arr);
