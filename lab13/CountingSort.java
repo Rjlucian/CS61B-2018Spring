@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Class with 2 ways of doing Counting sort, one naive way and one "better" way
  *
@@ -57,6 +59,26 @@ public class CountingSort {
         return sorted;
     }
 
+    private static int getMin(int[] arr) {
+        int min = Integer.MAX_VALUE;
+        for (int e : arr) {
+            if (min > e) {
+                min = e;
+            }
+        }
+        return min;
+    }
+
+    private static int getMax(int[] arr) {
+        int max = Integer.MIN_VALUE;
+        for (int e : arr) {
+            if (max < e) {
+                max = e;
+            }
+        }
+        return max;
+    }
+
     /**
      * Counting sort on the given int array, must work even with negative numbers.
      * Note, this code does not need to work for ranges of numbers greater
@@ -66,7 +88,57 @@ public class CountingSort {
      * @param arr int array that will be sorted
      */
     public static int[] betterCountingSort(int[] arr) {
-        // TODO make counting sort work with arrays containing negative numbers.
-        return null;
+        if (arr == null || arr.length <= 1) {
+            return arr;
+        }
+        int min = getMin(arr);
+        int max = getMax(arr);
+        int size = min < 0 ? max - min + 1 : max + 1;
+        int offset = min < 0 ? -min : 0;
+        int[] counts = new int[size];
+        int[] starts = new int[size];
+        int[] sortedArr = new int[arr.length];
+        updateCounts(arr, counts, offset);
+        updateStarts(starts, counts);
+        copyToSortedArr(sortedArr, counts, starts, offset);
+        return sortedArr;
     }
+
+    private static void updateCounts(int[] arr, int[] counts, int offset) {
+        Arrays.fill(counts, 0);
+        for (int e : arr) {
+            counts[e + offset]++;
+        }
+    }
+
+    private static void updateStarts(int[] starts, int[] counts) {
+        Arrays.fill(starts, 0);
+        starts[0] = 0;
+        for (int i = 1; i < starts.length; i++) {
+            starts[i] = counts[i - 1] + starts[i - 1];
+        }
+    }
+
+    private static void copyToSortedArr(int [] arr, int[] counts, int[] starts, int offset) {
+        for (int i = 0; i < counts.length; i++) {
+            for (int j = 1; j <= counts[i]; j++) {
+                arr[starts[i]] = i - offset;
+                starts[i]++;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {-1, -2, -3123123, 66, 9};
+        for (int e : arr) {
+            System.out.print(e + " ");
+        }
+        System.out.println();
+        int[] sorted = betterCountingSort(arr);
+        for (int e : sorted) {
+            System.out.print(e + " ");
+        }
+        System.out.println();
+    }
+
 }
