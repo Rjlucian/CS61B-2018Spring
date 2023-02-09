@@ -15,7 +15,7 @@ public class Word implements WorldState {
      * Reads the wordfile specified by the wordfile variable.
      */
     private void readWords() {
-        words = new HashSet<String>();
+        words = new HashSet<>();
 
         In in = new In(WORDFILE);
         while (!in.isEmpty()) {
