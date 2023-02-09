@@ -15,10 +15,6 @@ public class Board implements WorldState {
         }
     }
 
-    private Board(int[][] tiles, int sign) {
-        this.tiles = tiles;
-    }
-
     /**
      *
      * @param i tile's row
@@ -49,28 +45,28 @@ public class Board implements WorldState {
             int[][] newTiles = newArray(tiles);
             newTiles[blankRow][blankColumn] = newTiles[blankRow][blankColumn - 1];
             newTiles[blankRow][blankColumn - 1] = 0;
-            WorldState neighbor = new Board(newTiles, 1);
+            WorldState neighbor = new Board(newTiles);
             set.add(neighbor);
         }
         if (inBounds(blankRow + 1, blankColumn)) {
             int[][] newTiles = newArray(tiles);
             newTiles[blankRow][blankColumn] = newTiles[blankRow + 1][blankColumn];
             newTiles[blankRow + 1][blankColumn] = 0;
-            WorldState neighbor = new Board(newTiles, 1);
+            WorldState neighbor = new Board(newTiles);
             set.add(neighbor);
         }
         if (inBounds(blankRow, blankColumn + 1)) {
             int[][] newTiles = newArray(tiles);
             newTiles[blankRow][blankColumn] = newTiles[blankRow][blankColumn + 1];
             newTiles[blankRow ][blankColumn + 1] = 0;
-            WorldState neighbor = new Board(newTiles, 1);
+            WorldState neighbor = new Board(newTiles);
             set.add(neighbor);
         }
         if (inBounds(blankRow - 1, blankColumn)) {
             int[][] newTiles = newArray(tiles);
             newTiles[blankRow][blankColumn] = newTiles[blankRow - 1][blankColumn];
             newTiles[blankRow - 1][blankColumn] = 0;
-            WorldState neighbor = new Board(newTiles, 1);
+            WorldState neighbor = new Board(newTiles);
             set.add(neighbor);
         }
         return set;
