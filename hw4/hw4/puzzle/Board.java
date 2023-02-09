@@ -1,6 +1,5 @@
 package hw4.puzzle;
 
-import edu.princeton.cs.algs4.Queue;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -123,19 +122,32 @@ public class Board implements WorldState {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
-        Board o = (Board) obj;
-        if (this.getClass() != o.getClass()) {
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Board that = (Board) obj;
+        if (this.size() != that.size()) {
             return false;
         }
         for (int i = 0; i < size(); i++) {
-            if (!Arrays.equals(tiles[i], o.tiles[i])) {
-                return false;
+            for (int j = 0; j < size(); j++) {
+                if (tiles[i][j] != that.tiles[i][j]) {
+                    return false;
+                }
             }
         }
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     public String toString() {
@@ -144,7 +156,7 @@ public class Board implements WorldState {
         s.append(N).append("\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }
@@ -200,10 +212,4 @@ public class Board implements WorldState {
         return na;
     }
 
-
-    public static void main(String[] args) {
-        int[][] a = {{1,2, 3}, {4,0,5}, {7,8,6}};
-        Board b = new Board(a);
-        System.out.println(b.manhattan());
-    }
 }
