@@ -13,7 +13,7 @@ public class SeamCarver {
     private double[][] energies;
 
     public SeamCarver(Picture picture) {
-        this.picture = picture;
+        this.picture = new Picture(picture);
         initColors();
         initEnergies();
     }
