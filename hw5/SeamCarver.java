@@ -19,7 +19,7 @@ public class SeamCarver {
     }
 
     public Picture picture() {
-        return picture;
+        return new Picture(picture);
     }
 
     /**
@@ -68,6 +68,9 @@ public class SeamCarver {
     }
 
     private int help(double[] arr, int index) {
+        if (arr.length == 1) {
+            return index;
+        }
         if (index == 0) {
             if (arr[index] < arr[index + 1]) {
                 return index;
